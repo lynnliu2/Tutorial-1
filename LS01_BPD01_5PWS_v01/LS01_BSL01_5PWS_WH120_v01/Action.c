@@ -76,10 +76,10 @@ Action()
 
 	timer = lr_start_timer(); // instead of lr_start_transaction("T03_Connect" in WebSocketCB.c function OnOpenCB0().
 	lr_message("!!! connect started at: [%s]",lr_eval_string("{ts}"));
-	web_remove_auto_header("Host", "", LAST);//  Host: push.lightstreamer.com
+	//web_remove_auto_header("Host", "", LAST);//  Host: push.lightstreamer.com
 	web_websocket_connect("ID=0", 
 		"URI=ws://{server}/lightstreamer", 
-		"Origin=http://{server2}",
+		"Origin=http://{server}",
         "secWebSocketProtocol=js.lightstreamer.com",		
 		"OnOpenCB=OnOpenCB0", 
 		"OnMessageCB=OnMessageCB0", 
