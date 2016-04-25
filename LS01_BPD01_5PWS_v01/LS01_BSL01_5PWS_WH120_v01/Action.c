@@ -20,7 +20,7 @@ Action()
 
 	lr_start_transaction("T01_landing");
 	web_url("StockListDemo_Basic", 
-		"URL=http://{server}/demos/StockListDemo_Basic/", 
+		"URL=http://{server2}/StockListDemo_Basic/", 
 		"Resource=0", 
 		"RecContentType=text/html", 
 		"Referer=", 
@@ -47,7 +47,7 @@ Action()
 		"Action=http://{server}/lightstreamer/create_session.js", 
 		"Method=POST", 
 		"RecContentType=text/javascript", 
-		"Referer=http://{server}/demos/StockListDemo_Basic/", 
+		"Referer=http://{server2}/StockListDemo_Basic/", 
 		"Snapshot=t3.inf", 
 		"Mode=HTML", 
 		ITEMDATA, 
@@ -65,18 +65,10 @@ Action()
 
 
 	web_set_sockets_option("CLOSE_KEEPALIVE_CONNECTIONS","1");
-	web_add_header("Sec-WebSocket-Extensions", "permessage-deflate; client_max_window_bits, x-webkit-deflate-frame");
-	web_add_header("Sec-WebSocket-Protocol", "js.lightstreamer.com");
+
 
 	
-	web_add_header("Pragma","no-cache");
-	web_add_header("Cache-Control","no-cache");
-	web_remove_auto_header("Referer",LAST);
-	web_remove_auto_header("Accept-Encoding",LAST);
-	web_remove_auto_header("Accept-Language",LAST);
-	web_remove_auto_header("Accept",LAST);
-	web_remove_auto_header("Proxy-Connection",LAST);
-	web_remove_auto_header("Host",LAST);
+
 
 	// Go verbose:
 		lr_set_debug_message(LR_MSG_CLASS_JIT_LOG_ON_ERROR , LR_SWITCH_OFF); 
@@ -84,10 +76,11 @@ Action()
 
 	timer = lr_start_timer(); // instead of lr_start_transaction("T03_Connect" in WebSocketCB.c function OnOpenCB0().
 	lr_message("!!! connect started at: [%s]",lr_eval_string("{ts}"));
-	
+	web_remove_auto_header("Host", "", LAST);//  Host: push.lightstreamer.com
 	web_websocket_connect("ID=0", 
 		"URI=ws://{server}/lightstreamer", 
-		"Origin=http://{server}", 
+		"Origin=http://{server2}",
+        "secWebSocketProtocol=js.lightstreamer.com",		
 		"OnOpenCB=OnOpenCB0", 
 		"OnMessageCB=OnMessageCB0", 
 		"OnErrorCB=OnErrorCB0", 
